@@ -1,8 +1,10 @@
 package stepdefs;
 
+import domain.User;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -13,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.Assert;
 import pages.*;
+import utils.TestDataProvider;
 
 import java.awt.font.ShapeGraphicAttribute;
 
@@ -30,13 +33,36 @@ public class StepDefinitions {
     CountriesPage theCountriesPage;
     LocationsPage theLocationsPage;
     DepartmentsPage theDepartmentsPage;
+    BasePage theCurrentPage;
+    User validUser;
+    User inValidUser;
+
+    TestDataProvider theTestDataProvider = new TestDataProvider();
 
 //    ::::::::::  L O G I N ::::::::::
+    @When("a valid user enters his username and password")
+    public void validUserLogins(){
+
+        validUser = theTestDataProvider.getValidUser();
+        theLoginPage.enterUserName(validUser.getUserName());
+        theLoginPage.enterPwd(validUser.getPwd());
+    }
+    @When("a invalid user enters his username and password")
+    public void inValidUserLogins(){
+
+        inValidUser = theTestDataProvider.getInValidUser();
+        theLoginPage.enterUserName(inValidUser.getUserName());
+        theLoginPage.enterPwd(inValidUser.getPwd());
+    }
 
     @Given("Go to Autotools login page")
     public void goToLogin(){
         theLoginPage = new LoginPage();
+        theCurrentPage = theLoginPage;
     }
+//    @And ("close the browser")
+//    public void
+
     @And("user enters {string} as username")
     public void enterUserName(String username){
        theLoginPage.enterUserName(username);
@@ -52,17 +78,20 @@ public class StepDefinitions {
     @Then("a welcome page with {string} message should display")
     public void welcomeMsg(String welcomeMsg){
         theWelcomePage = new WelcomePage(theLoginPage);
+        theWelcomePage.takeScreenShot("welcomePage");
         Assert.assertEquals(theWelcomePage.getWelcomeMsg(), welcomeMsg);
         theWelcomePage.closePage();
     }
     @Then("an error message {string} should display")
     public void checkError(String errorMsg){
+        theLoginPage.takeScreenShot("loginPage");
         Assert.assertEquals(theLoginPage.getErrorMsg(),errorMsg);
         theLoginPage.closePage();
     }
     @Then("a welcome page with the footer text {string} should display")
     public void welcomePgFooter(String footerMsg){
         theWelcomePage = new WelcomePage(theLoginPage);
+        theWelcomePage.takeScreenShot("welcomePage");
         Assert.assertTrue(theWelcomePage.getFooterMsg().contains("kubecloudsinc"));
         theWelcomePage.closePage();
     }
@@ -73,15 +102,19 @@ public class StepDefinitions {
     public void clickSecondMenuItemdropdown(){
         theWelcomePage = new WelcomePage(theLoginPage);
         theWelcomePage.clickSecondMenuItem();
+        theCurrentPage = theWelcomePage;
     }
     @And("user clicks on MyProfile dropdown option")
     public void clickMyProfile(){
-       theWelcomePage.clickMyProfile();
+
+        theWelcomePage.clickMyProfile();
+        theCurrentPage = theWelcomePage;
     }
     @And("user changes the firstname as {string}")
     public void changeFirstName(String changedFirstName){
         theUserFormPage = new UserFormPage(theWelcomePage);
         theUserFormPage.changeFirstName(changedFirstName);
+        theCurrentPage=theUserFormPage;
     }
     @And("user clears the lastname")
     public void clearLastName(){
@@ -124,6 +157,7 @@ public class StepDefinitions {
     public void clickEmpDetails(){
        theWelcomePage.clickAllEmployeeDetails();
     }
+
     @Then("a table with {int} employees should display")
     public void checkEmpTotal(int totalEmployees){
         theEmployeesPage = new EmployeesPage(theWelcomePage);
@@ -154,12 +188,17 @@ public class StepDefinitions {
     @Then("user clicks on the Search button")
     public void clickSearch(){
             theEmployeeSearchPage.clickSearch();
-//         theEmployeeSearchPage.closePage();{**bcoz of this FirstName required error msg step failed**}
+         theCurrentPage = theEmployeeSearchPage;
+//         {**bcoz of this FirstName required error msg step failed**}
+    }
+    @And("user closes the page")
+    public void closePage(){
+        theCurrentPage.closePage();
     }
     @Then("{string} message should display")
     public void chkSrchErrorMsg(String errorMessage){
        Assert.assertEquals(theEmployeeSearchPage.checkSearchErrorMsg(),errorMessage);
-       theEmployeeSearchPage.closePage();
+       theCurrentPage=theEmployeeSearchPage;
 
     }
 

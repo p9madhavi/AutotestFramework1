@@ -4,8 +4,7 @@ Feature: testing UserForm Options FirstName And LastName
 
   Scenario: To Verify that the FirstName Change in the UserForm
     Given Go to Autotools login page
-    When user enters "madhavi@kubecloudsinc.com" as username
-    And user enters "sairam123" as password
+    When a valid user enters his username and password
     And user clicks Sign In button
     And user clicks on second menuitem dropdown
     And user clicks on MyProfile dropdown option
@@ -15,8 +14,7 @@ Feature: testing UserForm Options FirstName And LastName
 
   Scenario: To Verify that the LastName Change in the UserForm
     Given Go to Autotools login page
-    When user enters "madhavi@kubecloudsinc.com" as username
-    And user enters "sairam123" as password
+    When a valid user enters his username and password
     And user clicks Sign In button
     And user clicks on second menuitem dropdown
     And user clicks on MyProfile dropdown option

@@ -13,9 +13,11 @@ public class LoginPage extends BasePage{
     By strongBy = By.tagName("strong");
 
     public LoginPage() {
-        System.setProperty("webdriver.chrome.driver", "C:\\ChromeD\\chromedriver.exe");
+//       System.setProperty("webdriver.chrome.driver", "C:\\ChromeD\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", appProps.getChromeDriverPath());
         theWebDriver = new ChromeDriver();
-        theWebDriver.get("http://23.120.24.187:10080/autotoolsv2");
+//        theWebDriver.get("http://23.120.24.187:10080/autotoolsv2");
+        theWebDriver.get(appProps.getAppURL());
     }
     public void enterUserName(String username){
         theWebElement = theWebDriver.findElement(usernameBy);

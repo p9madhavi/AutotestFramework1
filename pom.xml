@@ -19,6 +19,7 @@
         <surefire-plugin-version>2.12.4</surefire-plugin-version>
         <cuke-testng-version>5.6.0</cuke-testng-version>
         <selenium-version>3.14.0</selenium-version>
+        <commons-io-version>2.7</commons-io-version>
     </properties>
     <build>
         <finalName>${final-name}</finalName>
@@ -66,6 +67,11 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io-version}</version>
         </dependency>
     </dependencies>
 </project>

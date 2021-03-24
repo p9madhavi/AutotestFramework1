@@ -1,16 +1,21 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
+import utils.ApplicationProperties;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Random;
 
 public class BasePage {
 
     WebDriver theWebDriver;
     WebElement theWebElement;
     FluentWait<WebDriver> wait;
+    ApplicationProperties appProps = new ApplicationProperties();
 
     By buttonBy  = By.className("btn-primary");
     By pTagBy = By.tagName("p");
@@ -21,6 +26,10 @@ public class BasePage {
     By empDetailsBy = By.linkText("All Employees Details");
     By empSearchBy = By.linkText("Employee Search");
     By regiondetailsBy = By.linkText("Region Details");
+
+    TakesScreenshot takesScreenshot;
+    private static final Random rnd = new Random();
+    private static final int UPPER_BOUND = 10000000;
 
     public void closePage()
     {
@@ -58,4 +67,16 @@ public class BasePage {
         theWebElement =  theWebDriver.findElement(regiondetailsBy);
         theWebElement.click();
     }
+    public void takeScreenShot(String page){
+
+        takesScreenshot = (TakesScreenshot) theWebDriver;
+        try {
+            FileUtils.copyFile(takesScreenshot.getScreenshotAs(OutputType.FILE)
+                    ,new File("src/test/resources/screenshots/"+page+rnd.nextInt(UPPER_BOUND)+".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

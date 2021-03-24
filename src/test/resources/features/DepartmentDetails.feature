@@ -3,8 +3,7 @@ Feature: Testing DepartmentDetails
 
   Scenario: To Verify that the Departments count in Seattle Location
     Given Go to Autotools login page
-    When user enters "madhavi@kubecloudsinc.com" as username
-    And user enters "sairam123" as password
+    When a valid user enters his username and password
     And user clicks Sign In button
     And user clicks on fourth menuitem RegionDetails
     And user clicks on the region name Americas
